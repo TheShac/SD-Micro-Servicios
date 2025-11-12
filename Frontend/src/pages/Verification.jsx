@@ -56,3 +56,6 @@ export default function Verification(){
         </form>
       )}
     </motion.div>
+  );
+}
+export default Verification;  

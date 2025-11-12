@@ -93,3 +93,6 @@ export default function Dashboard() {
         © 2025 - Sistema de Autenticación | Desarrollado por tu equipo 🚀
       </footer>
     </motion.div>
+  );  
+}    
+export default Dashboard;

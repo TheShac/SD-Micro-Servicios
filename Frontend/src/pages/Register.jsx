@@ -43,3 +43,6 @@ export default function Register(){
         </div>
       </form>
     </motion.div>
+  );
+}
+export default Register;  

@@ -62,3 +62,6 @@ export default function Recovery(){
         </form>
       )}
     </motion.div>
+  );
+}
+export default Recovery;    

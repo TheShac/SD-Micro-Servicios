@@ -42,3 +42,6 @@ export default function Login(){
         </div>
       </form>
     </motion.div>
+  );
+}
+export default Login;
