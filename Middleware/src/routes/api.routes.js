@@ -20,16 +20,31 @@ router.all('/register', (req, res) => {
   simpleProxyHandler(req, res, target);
 });
 
-// 🔹 RECOVERY con failover
-router.all('/recovery', (req, res) => {
+// 🔹 RECOVERY
+router.all('/forgot-password', (req, res) => {
   const { primaryUrl, mirrorUrl } = SERVICE_MAP['/api/recovery'];
+  console.log(`[DEBUG] RECOVERY target: ${primaryUrl}`);
   failoverHandler(req, res, primaryUrl, mirrorUrl);
 });
 
-// 🔹 VERIFICATION con failover
-router.all('/verification', (req, res) => {
-  const { primaryUrl, mirrorUrl } = SERVICE_MAP['/api/verification'];
+router.all('/reset-password', (req, res) => {
+  const { primaryUrl, mirrorUrl } = SERVICE_MAP['/api/recovery'];
+  console.log(`[DEBUG] RECOVERY target: ${primaryUrl}`);
   failoverHandler(req, res, primaryUrl, mirrorUrl);
 });
+
+// 🔹 VERIFICATION (failover)
+router.all('/send-verification', (req, res) => {
+  const { primaryUrl, mirrorUrl } = SERVICE_MAP['/api/verification'];
+  console.log(`[DEBUG] VERIFICATION target: ${primaryUrl}`);
+  failoverHandler(req, res, primaryUrl, mirrorUrl);
+});
+
+router.all('/verify-email', (req, res) => {
+  const { primaryUrl, mirrorUrl } = SERVICE_MAP['/api/verification'];
+  console.log(`[DEBUG] VERIFICATION target: ${primaryUrl}`);
+  failoverHandler(req, res, primaryUrl, mirrorUrl);
+});
+
 
 export default router;
