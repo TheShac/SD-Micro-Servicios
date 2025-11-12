@@ -1,15 +1,15 @@
-import { pool } from '../db.js';
+import { pool } from '../config/db.js';
 
 export const Model = {
 
-    findByEmai: async (email) => {
+    findByEmail: async (email) => {
         const [rows] = await pool.query(
             'SELECT id_user, email FROM User WHERE email = ?', [email]
         );
         return rows[0];
     },
 
-    createPasswordResettoken: async (userId, token, expiresAt) => {
+    createPasswordResetToken: async (userId, token, expiresAt) => {
         const [result] = await pool.query(
             `INSERT INTO PasswordResetTokens (user_id, token, expires_at) VALUES (?, ?, ?)`, [userId, token, expiresAt]
         );
@@ -23,7 +23,7 @@ export const Model = {
         return rows[0];
     },
 
-    updatePasswordAndCleanTokens: async (newHashedPassword, userId) => { 
+    updatePasswordAndCleanTokens: async (userId, newHashedPassword) => { 
         const connection = await pool.getConnection();
         await connection.beginTransaction();
         try{

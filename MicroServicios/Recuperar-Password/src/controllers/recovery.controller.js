@@ -4,13 +4,16 @@ import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
+    secure: process.env.EMAIL_SECURE === 'true',
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
     }
 });
 
+// Solicitud de Token
 export const forgotPassword = async (req, res) => {
     const { email } = req.body;
     try {
@@ -21,17 +24,20 @@ export const forgotPassword = async (req, res) => {
             return res.status(202).json({ message: 'Si el correo existe, se ha enviado un enlace para restablecer la contraseña.' });
         }
 
+        const userId = user.id_user;
         const token = crypto.randomBytes(32).toString('hex');
         const expiresAt = new Date(Date.now() + 3600000);
 
-        await Model.createPasswordResetToken(user.id, token, expiresAt);
+        await Model.createPasswordResetToken(userId, token, expiresAt);
 
-        const resetLink = `http://tufrontend.com/reset-password?token=${token}`;
+        const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
         
+        console.log(`Enviando correo a : ${user.email} con token: ${token}`);
         await transporter.sendMail({
+            from: process.env.EMAIL_FROM,
             to: user.email,
             subject: 'Restablecimiento de Contraseña',
-            html: `<p>Solicitaste un restablecimiento de contraseña. Haz clic en el siguiente enlace: <a href="${resetLink}">${resetLink}</a></p>`
+            html: `<p>MS1, Solicitaste un restablecimiento de contraseña. Haz clic en el siguiente enlace: <a href="${resetLink}">${resetLink}</a></p>`
         });
 
         res.status(202).json({ message: 'Si el correo existe, se ha enviado un enlace para restablecer la contraseña.' });
@@ -42,28 +48,30 @@ export const forgotPassword = async (req, res) => {
     }
 };
 
+// Restablecimiento de contraseña
 export const resetPassword = async (req, res) => {
     const { token, newPassword } = req.body;
 
     if (!token || !newPassword) {
-        return res.status(400).json({ message: 'Token y nueva contraseña son requeridos.' });
+        return res.status(400).json({ message: 'MS1, Token y nueva contraseña son requeridos.' });
     }
 
     try {
         const tokenEntry = await Model.findValidToken(token);
 
         if (!tokenEntry) {
-            return res.status(400).json({ message: 'El enlace de restablecimiento es inválido o ha expirado.' });
+            return res.status(400).json({ message: 'MS1, El enlace de restablecimiento es inválido o ha expirado.' });
         }
 
         const newHashedPassword = await bcrypt.hash(newPassword, 10);
         
         await Model.updatePasswordAndCleanTokens(tokenEntry.user_id, newHashedPassword);
 
-        res.status(200).json({ message: 'Contraseña restablecida exitosamente.' });
+        res.status(200).json({ message: 'MS1, Contraseña restablecida exitosamente.' });
 
-    } catch (error) {
-        console.error('Error al restablecer contraseña:', error);
+    } 
+    catch (error) {
+        console.error('MS1, Error al restablecer contraseña:', error);
         res.status(500).json({ error: 'Error interno del servidor' });
     }
 };
