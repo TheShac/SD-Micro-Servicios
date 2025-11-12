@@ -58,4 +58,4 @@ export default function Verification(){
     </motion.div>
   );
 }
-export default Verification;  
+

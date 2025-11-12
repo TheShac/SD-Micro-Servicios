@@ -95,4 +95,3 @@ export default function Dashboard() {
     </motion.div>
   );  
 }    
-export default Dashboard;

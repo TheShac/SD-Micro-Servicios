@@ -44,4 +44,3 @@ export default function Login(){
     </motion.div>
   );
 }
-export default Login;

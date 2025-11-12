@@ -64,4 +64,4 @@ export default function Recovery(){
     </motion.div>
   );
 }
-export default Recovery;    
+  
