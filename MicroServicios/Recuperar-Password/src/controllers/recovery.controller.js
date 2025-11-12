@@ -4,12 +4,12 @@ import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 
 const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: process.env.EMAIL_PORT,
-    secure: process.env.EMAIL_SECURE === 'true',
+    host: process.env.GMAIL_HOST,
+    port: process.env.GMAIL_PORT,
+    secure: process.env.GMAIL_SECURE === 'true',
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS
     }
 });
 
