@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
+import cors from 'cors';
 import { fileURLToPath } from 'url';
 import apiRoutes from './routes/api.routes.js';
 
@@ -10,7 +11,13 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT;
+const FRONTEND_URL = process.env.FRONTEND_URL;
+
+app.use(cors({
+  origin: `${FRONTEND_URL}`,
+  credentials: true
+}));
 
 app.use('/api', apiRoutes);
 
