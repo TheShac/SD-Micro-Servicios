@@ -1,50 +1,40 @@
 import { Router } from 'express';
-
 import { simpleProxyHandler, failoverHandler } from '../controllers/proxy.controller.js';
 import { getServiceMap } from '../config/serviceMap.js';
 
 const router = Router();
-const SERVICE_MAP = getServiceMap();
+const MAP = getServiceMap();
 
-// 🔹 LOGIN
+// LOGIN
 router.all('/login', (req, res) => {
-  const target = SERVICE_MAP['/api/login']?.url;
-  console.log(`[DEBUG] LOGIN target: ${target}`);
-  simpleProxyHandler(req, res, target);
+  simpleProxyHandler(req, res, MAP['/api/login'].url);
 });
 
-// 🔹 REGISTER
+// REGISTER
 router.all('/register', (req, res) => {
-  const target = SERVICE_MAP['/api/register']?.url;
-  console.log(`[DEBUG] REGISTER target: ${target}`);
-  simpleProxyHandler(req, res, target);
+  simpleProxyHandler(req, res, MAP['/api/register'].url);
 });
 
-// 🔹 RECOVERY
+// RECOVERY
 router.all('/forgot-password', (req, res) => {
-  const { primaryUrl, mirrorUrl } = SERVICE_MAP['/api/recovery'];
-  console.log(`[DEBUG] RECOVERY target: ${primaryUrl}`);
-  failoverHandler(req, res, primaryUrl, mirrorUrl);
+  const s = MAP['/api/forgot-password'];
+  failoverHandler(req, res, s.primaryUrl, s.mirrorUrl);
 });
 
 router.all('/reset-password', (req, res) => {
-  const { primaryUrl, mirrorUrl } = SERVICE_MAP['/api/recovery'];
-  console.log(`[DEBUG] RECOVERY target: ${primaryUrl}`);
-  failoverHandler(req, res, primaryUrl, mirrorUrl);
+  const s = MAP['/api/reset-password'];
+  failoverHandler(req, res, s.primaryUrl, s.mirrorUrl);
 });
 
-// 🔹 VERIFICATION (failover)
+// EMAIL VERIFICATION
 router.all('/send-verification', (req, res) => {
-  const { primaryUrl, mirrorUrl } = SERVICE_MAP['/api/verification'];
-  console.log(`[DEBUG] VERIFICATION target: ${primaryUrl}`);
-  failoverHandler(req, res, primaryUrl, mirrorUrl);
+  const s = MAP['/api/send-verification'];
+  failoverHandler(req, res, s.primaryUrl, s.mirrorUrl);
 });
 
 router.all('/verify-email', (req, res) => {
-  const { primaryUrl, mirrorUrl } = SERVICE_MAP['/api/verification'];
-  console.log(`[DEBUG] VERIFICATION target: ${primaryUrl}`);
-  failoverHandler(req, res, primaryUrl, mirrorUrl);
+  const s = MAP['/api/verify-email'];
+  failoverHandler(req, res, s.primaryUrl, s.mirrorUrl);
 });
-
 
 export default router;

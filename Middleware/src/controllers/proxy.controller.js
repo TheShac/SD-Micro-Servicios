@@ -1,33 +1,41 @@
+import getRawBody from 'raw-body';
 import { sendRequest } from '../services/network.service.js';
 
-// 🔹 Caso simple: login y register
+// LOGIN + REGISTER (SIN MIRROR)
 export const simpleProxyHandler = async (req, res, targetUrl) => {
-  const response = await sendRequest(targetUrl, req);
-  if (response) {
-    res.status(response.status).send(response.data);
-  } else {
-    res.status(503).json({ message: `Servicio no disponible en ${targetUrl}` });
-  }
+  const bodyData = await getRawBody(req).catch(() => null);
+
+  const response = await sendRequest(targetUrl, req, bodyData);
+
+  if (response)
+    return res.status(response.status).json(response.data);
+
+  return res.status(503).json({ message: 'Servicio no disponible.' });
 };
 
-// 🔹 Caso failover: recovery y verification
+// FAILOVER PARA RECOVERY Y VERIFICATION
 export const failoverHandler = async (req, res, primaryUrl, mirrorUrl) => {
-  let response = await sendRequest(primaryUrl, req);
+  const bodyData = await getRawBody(req).catch(() => null);
+
+  // PRIMARIO
+  let response = await sendRequest(primaryUrl, req, bodyData);
 
   if (response) {
-    console.log(`[INFO] Solicitud procesada por PRIMARIO: ${primaryUrl}`);
-    return res.status(response.status).send(response.data);
+    console.log(`[INFO] PRIMARIO activo → ${primaryUrl}`);
+    return res.status(response.status).json(response.data);
   }
 
-  console.warn(`[WARNING] Primario (${primaryUrl}) caído. Intentando espejo...`);
-  response = await sendRequest(mirrorUrl, req);
+  console.warn(`[WARNING] Primario caído. Intentando espejo...`);
+
+  // ESPEJO
+  response = await sendRequest(mirrorUrl, req, bodyData);
 
   if (response) {
-    console.log(`[SUCCESS] Solicitud redirigida a ESPEJO: ${mirrorUrl}`);
-    return res.status(response.status).send(response.data);
+    console.log(`[SUCCESS] Espejo activo → ${mirrorUrl}`);
+    return res.status(response.status).json(response.data);
   }
 
   res.status(503).json({
-    message: 'Servicio no disponible. Primario y espejo caídos.'
+    message: "Servicio no disponible. Primario y espejo caídos."
   });
 };
