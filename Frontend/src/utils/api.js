@@ -1,3 +1,5 @@
+const API_URL = "http://localhost:4000/api";
+
 async function call(url, options) {
   const opts = { headers: { 'Content-Type': 'application/json' }, ...options }
   if (opts.body && typeof opts.body === 'object') opts.body = JSON.stringify(opts.body)
@@ -9,6 +11,8 @@ async function call(url, options) {
   return data
 }
 
-export async function post(url, body) {
+export function post(url, body) {
   return call(url, { method: 'POST', body })
 }
+
+export { API_URL };

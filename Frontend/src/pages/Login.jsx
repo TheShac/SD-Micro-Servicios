@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { post } from '../utils/api'
-import { LOGIN_URL } from '../config'
+import { API_URL } from '../utils/api'
 import { motion } from 'framer-motion'
 
 export default function Login(){
@@ -14,7 +14,7 @@ export default function Login(){
     e.preventDefault()
     setMsg('')
     try{
-      const data = await post(`${LOGIN_URL}/api/login`, { email, password })
+      const data = await post(`${API_URL}/login`, { email, password })
       // store returned user or token
       localStorage.setItem('user', data.user ? JSON.stringify(data.user) : email)
       navigate('/dashboard')

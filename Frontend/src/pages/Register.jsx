@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { post } from '../utils/api'
-import { REGISTER_URL } from '../config'
+import { API_URL } from '../utils/api'
 import { motion } from 'framer-motion'
 
 export default function Register(){
-  const [form, setForm] = useState({ nombre:'', correo:'', password:'' })
+  const [form, setForm] = useState({ nombre:'', apellido:'', username:'', correo:'', password:'' })
   const [msg, setMsg] = useState('')
 
   const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value })
@@ -13,7 +13,7 @@ export default function Register(){
     e.preventDefault()
     setMsg('')
     try{
-      const data = await post(`${REGISTER_URL}/api/register`, form)
+      const data = await post(`${API_URL}/register`, form)
       setMsg(data.message || 'Registro exitoso. Revisa tu correo.')
     }catch(err){
       setMsg(err.data?.message || 'Error al registrar')
@@ -28,6 +28,14 @@ export default function Register(){
         <div>
           <label className='text-sm'>Nombre</label>
           <input name='nombre' required value={form.nombre} onChange={handleChange} className='w-full mt-1 p-2 border rounded' />
+        </div>
+        <div>
+          <label className='text-sm'>Apellido</label>
+          <input name='apellido' required value={form.apellido} onChange={handleChange} className='w-full mt-1 p-2 border rounded' />
+        </div>
+        <div>
+          <label className='text-sm'>Username</label>
+          <input name='username' required value={form.username} onChange={handleChange} className='w-full mt-1 p-2 border rounded' />
         </div>
         <div>
             <label className='text-sm'>Correo</label>
