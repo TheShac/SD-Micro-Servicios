@@ -15,7 +15,7 @@ export const Model = {
     const { nombre, apellido, username, email, password } = userData;
     const [result] = await pool.query(
       `INSERT INTO User ( nombre, apellido, username, email, password) VALUES (?, ?, ?, ?, ?)`,
-      [ nombre, apellido,username, email, password ]
+      [ nombre, apellido, username, email, password ]
     );
     return result.insertId;
   }
