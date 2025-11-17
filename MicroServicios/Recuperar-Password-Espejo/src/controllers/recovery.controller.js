@@ -37,7 +37,7 @@ export const forgotPassword = async (req, res) => {
             from: process.env.EMAIL_FROM,
             to: user.email,
             subject: 'Restablecimiento de Contraseña',
-            html: `<p>MS2, Solicitaste un restablecimiento de contraseña. Haz clic en el siguiente enlace: <a href="${resetLink}">${resetLink}</a></p>`
+            html: `<p>MS1, Solicitaste un restablecimiento de contraseña. Haz clic en el siguiente enlace: <a href="${resetLink}">${resetLink}</a></p>`
         });
 
         res.status(202).json({ message: 'Si el correo existe, se ha enviado un enlace para restablecer la contraseña.' });
@@ -53,25 +53,25 @@ export const resetPassword = async (req, res) => {
     const { token, newPassword } = req.body;
 
     if (!token || !newPassword) {
-        return res.status(400).json({ message: 'MS2, Token y nueva contraseña son requeridos.' });
+        return res.status(400).json({ message: 'MS1, Token y nueva contraseña son requeridos.' });
     }
 
     try {
         const tokenEntry = await Model.findValidToken(token);
 
         if (!tokenEntry) {
-            return res.status(400).json({ message: 'MS2, El enlace de restablecimiento es inválido o ha expirado.' });
+            return res.status(400).json({ message: 'MS1, El enlace de restablecimiento es inválido o ha expirado.' });
         }
 
         const newHashedPassword = await bcrypt.hash(newPassword, 10);
         
         await Model.updatePasswordAndCleanTokens(tokenEntry.user_id, newHashedPassword);
 
-        res.status(200).json({ message: 'MS2, Contraseña restablecida exitosamente.' });
+        res.status(200).json({ message: 'MS1, Contraseña restablecida exitosamente.' });
 
     } 
     catch (error) {
-        console.error('MS2, Error al restablecer contraseña:', error);
+        console.error('MS1, Error al restablecer contraseña:', error);
         res.status(500).json({ error: 'Error interno del servidor' });
     }
 };
