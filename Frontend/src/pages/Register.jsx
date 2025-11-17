@@ -5,7 +5,6 @@ import { motion } from 'framer-motion'
 export default function Register(){
   const [form, setForm] = useState({ nombre:'', apellido:'', username:'', email:'', password:'' })
   const [msg, setMsg] = useState('')
-
   const [isError, setIsError] = useState(false)
 
   const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value })
@@ -24,40 +23,100 @@ export default function Register(){
   }
 
   return (
-    <motion.div initial={{opacity:0,y:8}} animate={{opacity:1,y:0}} className='max-w-md mx-auto bg-white p-6 rounded-lg shadow'>
-      <h2 className='text-2xl font-semibold mb-4'>Registro</h2>
+    <motion.div
+      initial={{opacity:0,y:8}}
+      animate={{opacity:1,y:0}}
+      className='card max-w-md mx-auto'
+    >
+      <h2 className='text-2xl font-semibold mb-4 text-gray-100'>
+        Registro
+      </h2>
+
       {msg && (
-          <div className={`px-3 py-2 rounded mb-3 ${isError ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
-              {msg}
-          </div>
+        <div
+          className={`px-3 py-2 rounded mb-3 border ${
+            isError
+              ? 'bg-red-900/30 text-red-300 border-red-700'
+              : 'bg-green-900/20 text-green-300 border-green-700'
+          }`}
+        >
+          {msg}
+        </div>
       )}
-      <form onSubmit={submit} className='space-y-3 mt-3'>
+
+      <form onSubmit={submit} className='space-y-4 mt-3'>
+        
         <div>
-          <label className='text-sm'>Nombre</label>
-          <input name='nombre' required value={form.nombre} onChange={handleChange} className='w-full mt-1 p-2 border rounded' />
+          <label className='text-sm text-gray-400'>Nombre</label>
+          <input
+            name='nombre'
+            required
+            value={form.nombre}
+            onChange={handleChange}
+            className='input w-full mt-1'
+          />
         </div>
+
         <div>
-          <label className='text-sm'>Apellido</label>
-          <input name='apellido' required value={form.apellido} onChange={handleChange} className='w-full mt-1 p-2 border rounded' />
+          <label className='text-sm text-gray-400'>Apellido</label>
+          <input
+            name='apellido'
+            required
+            value={form.apellido}
+            onChange={handleChange}
+            className='input w-full mt-1'
+          />
         </div>
+
         <div>
-          <label className='text-sm'>Username</label>
-          <input name='username' required value={form.username} onChange={handleChange} className='w-full mt-1 p-2 border rounded' />
+          <label className='text-sm text-gray-400'>Username</label>
+          <input
+            name='username'
+            required
+            value={form.username}
+            onChange={handleChange}
+            className='input w-full mt-1'
+          />
         </div>
+
         <div>
-            <label className='text-sm'>Correo</label>
-            <input type='email' name='email' required value={form.email} onChange={handleChange} className='w-full mt-1 p-2 border rounded' />
+          <label className='text-sm text-gray-400'>Correo</label>
+          <input
+            type='email'
+            name='email'
+            required
+            value={form.email}
+            onChange={handleChange}
+            className='input w-full mt-1'
+          />
         </div>
+
         <div>
-            <label className='text-sm'>Contraseña</label>
-            <input type='password' name='password' required value={form.password} onChange={handleChange} className='w-full mt-1 p-2 border rounded' />
+          <label className='text-sm text-gray-400'>Contraseña</label>
+          <input
+            type='password'
+            name='password'
+            required
+            value={form.password}
+            onChange={handleChange}
+            className='input w-full mt-1'
+          />
         </div>
-        <div className='flex items-center justify-between'>
-          <button className='bg-green-600 text-white px-4 py-2 rounded'>Crear cuenta</button>
-          <a className='text-sm' href='/login'>¿Ya tienes cuenta?</a>
+
+        <div className='flex items-center justify-between pt-2'>
+          <button className='btn-primary'>
+            Crear cuenta
+          </button>
+
+          <a
+            href='/login'
+            className='text-sm text-gray-400 hover:text-gray-200 transition'
+          >
+            ¿Ya tienes cuenta?
+          </a>
         </div>
+
       </form>
     </motion.div>
-  );
+  )
 }
-

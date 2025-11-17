@@ -3,4 +3,195 @@
 @tailwind utilities;
 
 html, body, #root { height: 100%; }
-body { @apply bg-gray-50 text-gray-800; font-family: Inter, sans-serif; }
+
+body {
+  @apply bg-black text-gray-200; 
+  font-family: Inter, sans-serif;
+}
+
+/* Containers */
+.card {
+  @apply bg-neutral-900 rounded-2xl shadow-xl p-6 border border-neutral-800; 
+}
+
+/* Buttons */
+.btn {
+  @apply bg-neutral-800 hover:bg-neutral-700 text-gray-200 font-medium py-2 px-4 rounded-xl transition-all duration-200;
+}
+
+/* Inputs */
+.input {
+  @apply bg-neutral-900 border border-neutral-700 rounded-xl text-gray-200 p-2 focus:ring-2 focus:ring-gray-500;
+}
+
+/* Headers */
+h1, h2, h3, h4 {
+  @apply text-gray-100 font-semibold;
+}
+
+/* Links */
+a {
+  @apply text-gray-300 hover:text-white transition-colors;
+}
+/* Enhanced harmony across components */
+
+/* Unified Button Styles */
+.btn-primary {
+  @apply bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-5 rounded-2xl shadow-md shadow-black/20 transition-all duration-200;
+}
+
+.btn-secondary {
+  @apply bg-neutral-700 hover:bg-neutral-600 text-gray-200 font-medium py-2 px-4 rounded-2xl transition-all duration-200;
+}
+
+.btn-danger {
+  @apply bg-red-700 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-2xl transition-all duration-200;
+}
+
+/* Harmonized Card */
+.card {
+  @apply bg-neutral-900/90 rounded-2xl shadow-xl shadow-black/30 border border-neutral-800 p-6 backdrop-blur;
+}
+
+/* Inputs unified */
+.input {
+  @apply bg-neutral-900 border border-neutral-700 rounded-xl text-gray-200 p-3 focus:ring-2 focus:ring-gray-500 placeholder-gray-500;
+}
+
+/* Navbar */
+.navbar {
+  @apply w-full bg-neutral-950/80 backdrop-blur shadow-lg shadow-black/40 flex items-center justify-between px-6 py-4 border-b border-neutral-800;
+}
+
+.nav-item {
+  @apply text-gray-300 hover:text-white mx-3 transition-colors;
+}
+
+/* Modern Titles */
+h1 {
+  @apply text-4xl font-bold text-white;
+}
+h2 {
+  @apply text-3xl font-semibold text-gray-100;
+}
+h3 {
+  @apply text-2xl font-semibold text-gray-200;
+}
+
+/* Containers */
+.section {
+  @apply p-6 md:p-10 bg-neutral-950/60 rounded-3xl shadow-inner shadow-black/20;
+}
+
+/* ============================================================
+    🌗 AUTO DARK/LIGHT MODE
+   ============================================================ */
+@media (prefers-color-scheme: light) {
+  body {
+    @apply bg-gray-50 text-gray-800;
+  }
+
+  .card {
+    @apply bg-white text-gray-800 border-gray-300 shadow-xl;
+  }
+
+  .input {
+    @apply bg-white text-gray-800 border-gray-300;
+  }
+
+  .btn-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-700;
+  }
+
+  .navbar {
+    @apply bg-white/70 backdrop-blur border-gray-200 shadow-md;
+  }
+
+  .nav-item {
+    @apply text-gray-700 hover:text-black;
+  }
+}
+/* ============================================================
+    ✨ INPUT HOVER + FEEDBACK
+   ============================================================ */
+.input {
+  transition: all 0.25s ease;
+}
+
+.input:hover {
+  border-color: rgb(160,160,160);
+}
+
+.input:focus {
+  transform: scale(1.01);
+}
+
+/* ============================================================
+    🪟 CARD ANIMADA PREMIUM
+   ============================================================ */
+.card {
+  transition: all 0.35s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+}
+
+/* ============================================================
+    🟦 BOTONES PREMIUM (MICROINTERACCIONES)
+   ============================================================ */
+.btn-primary,
+.btn,
+.btn-secondary,
+.btn-danger {
+  transition: all 0.25s ease;
+  transform-origin: center;
+}
+
+.btn-primary:hover,
+.btn:hover,
+.btn-secondary:hover,
+.btn-danger:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 12px rgba(180, 180, 255, 0.25);
+}
+
+.btn-primary:active,
+.btn:active,
+.btn-secondary:active,
+.btn-danger:active {
+  transform: scale(0.96);
+}
+
+/* ============================================================
+    🌟 NAVBAR HOVER + GLOW SUAVE
+   ============================================================ */
+.nav-item {
+  position: relative;
+}
+
+.nav-item:hover {
+  text-shadow: 0 0 6px rgba(255,255,255,0.4);
+}
+
+/* ============================================================
+    🎚 SUAVIZADO GLOBAL INTELIGENTE (SIN PARPADEOS)
+   ============================================================ */
+
+html, body {
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+button, input, .card, .btn, .navbar, .nav-item {
+  transition: background-color 0.25s ease,
+              color 0.25s ease,
+              border-color 0.25s ease,
+              box-shadow 0.25s ease,
+              transform 0.25s ease;
+}
+
+/* IMPORTANTE:
+   NO aplicar transform/background/color a todos los elementos (*)
+   Esto elimina completamente el parpadeo entre rutas.
+*/

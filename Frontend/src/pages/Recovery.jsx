@@ -30,7 +30,6 @@ export default function Recovery(){
         
         try{
             const data = await post(`${API_URL}/forgot-password`, { email })
-            
             setMsg(data.message || 'Si existe, se envió correo con instrucciones')
         }
         catch(err){
@@ -52,7 +51,6 @@ export default function Recovery(){
         
         try{
             const data = await post(`${API_URL}/reset-password`, { token, newPassword })
-            
             setMsg(data.message || 'Contraseña actualizada. Puedes iniciar sesión.')
             navigate('/login');
         }
@@ -62,40 +60,71 @@ export default function Recovery(){
         }
     }
 
-    const msgClass = isError ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800';
+    const msgClass = isError 
+        ? 'bg-red-900/30 text-red-300 border border-red-700'
+        : 'bg-green-900/20 text-green-300 border border-green-700';
 
     return (
-        <motion.div initial={{opacity:0,y:8}} animate={{opacity:1,y:0}} className='max-w-md mx-auto bg-white p-6 rounded-lg shadow'>
-            <h2 className='text-2xl font-semibold mb-4'>Recuperar contraseña</h2>
+        <motion.div
+            initial={{opacity:0,y:8}}
+            animate={{opacity:1,y:0}}
+            className='card max-w-md mx-auto'
+        >
+            <h2 className='text-2xl font-semibold mb-4 text-gray-100'>
+                Recuperar contraseña
+            </h2>
             
-            {msg && <div className={`px-3 py-2 rounded mb-3 ${msgClass}`}>{msg}</div>}
+            {msg && (
+                <div className={`px-3 py-2 rounded mb-3 ${msgClass}`}>
+                    {msg}
+                </div>
+            )}
             
             {step===1 ? (
-                <form onSubmit={sendForgot} className='space-y-3 mt-3'>
+                <form onSubmit={sendForgot} className='space-y-4 mt-3'>
                     <div>
-                        <label className='text-sm'>Correo</label>
-                        <input type='email' required value={email} onChange={e=>setEmail(e.target.value)} className='w-full mt-1 p-2 border rounded' />
+                        <label className='text-sm text-gray-400'>Correo</label>
+                        <input
+                            type='email'
+                            required
+                            value={email}
+                            onChange={e=>setEmail(e.target.value)}
+                            className='input w-full mt-1'
+                        />
                     </div>
-                    <div className='flex justify-end'>
-                        <button className='bg-yellow-600 text-white px-4 py-2 rounded'>Enviar enlace</button>
+
+                    <div className='flex justify-end pt-2'>
+                        <button className='btn-primary'>
+                            Enviar enlace
+                        </button>
                     </div>
                 </form>
             ) : (
-                <form onSubmit={doReset} className='space-y-3 mt-3'>
+                <form onSubmit={doReset} className='space-y-4 mt-3'>
                     <div>
-                        <label className='text-sm'>Token de restablecimiento cargado</label>
+                        <label className='text-sm text-gray-400'>Token detectado</label>
                         <input 
                             value={token.substring(0, 10) + '...'}
-                            disabled 
-                            className='w-full mt-1 p-2 border rounded bg-gray-100 cursor-not-allowed text-sm text-gray-500' 
+                            disabled
+                            className='w-full mt-1 bg-neutral-800 border border-neutral-700 text-gray-400 cursor-not-allowed rounded-xl p-2 text-sm'
                         />
                     </div>
+
                     <div>
-                        <label className='text-sm'>Nueva contraseña</label>
-                        <input type='password' required value={newPassword} onChange={e=>setNewPassword(e.target.value)} className='w-full mt-1 p-2 border rounded' />
+                        <label className='text-sm text-gray-400'>Nueva contraseña</label>
+                        <input
+                            type='password'
+                            required
+                            value={newPassword}
+                            onChange={e=>setNewPassword(e.target.value)}
+                            className='input w-full mt-1'
+                        />
                     </div>
-                    <div className='flex justify-end'>
-                        <button className='bg-blue-600 text-white px-4 py-2 rounded'>Restablecer</button>
+
+                    <div className='flex justify-end pt-2'>
+                        <button className='btn-primary'>
+                            Restablecer
+                        </button>
                     </div>
                 </form>
             )}
