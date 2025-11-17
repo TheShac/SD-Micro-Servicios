@@ -32,8 +32,8 @@ export default function Recovery(){
             const data = await post(`${API_URL}/forgot-password`, { email })
             
             setMsg(data.message || 'Si existe, se envió correo con instrucciones')
-            setStep(2)
-        }catch(err){
+        }
+        catch(err){
             setIsError(true);
             setMsg(err.data?.message || 'Error al enviar correo')
         }
@@ -43,13 +43,20 @@ export default function Recovery(){
         e.preventDefault(); 
         setMsg('');
         setIsError(false);
+
+        if (!token) {
+            setIsError(true);
+            setMsg('Error crítico: Token no detectado. Vuelve a solicitar el enlace.');
+            return;
+        }
         
         try{
             const data = await post(`${API_URL}/reset-password`, { token, newPassword })
             
             setMsg(data.message || 'Contraseña actualizada. Puedes iniciar sesión.')
             navigate('/login');
-        }catch(err){
+        }
+        catch(err){
             setIsError(true);
             setMsg(err.data?.message || 'Error al restablecer contraseña')
         }
@@ -76,8 +83,12 @@ export default function Recovery(){
             ) : (
                 <form onSubmit={doReset} className='space-y-3 mt-3'>
                     <div>
-                        <label className='text-sm'>Token</label>
-                        <input required value={token} disabled={!!urlToken} className='w-full mt-1 p-2 border rounded bg-gray-100' />
+                        <label className='text-sm'>Token de restablecimiento cargado</label>
+                        <input 
+                            value={token.substring(0, 10) + '...'}
+                            disabled 
+                            className='w-full mt-1 p-2 border rounded bg-gray-100 cursor-not-allowed text-sm text-gray-500' 
+                        />
                     </div>
                     <div>
                         <label className='text-sm'>Nueva contraseña</label>

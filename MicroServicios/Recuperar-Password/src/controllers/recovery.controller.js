@@ -30,7 +30,7 @@ export const forgotPassword = async (req, res) => {
 
         await Model.createPasswordResetToken(userId, token, expiresAt);
 
-        const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
+        const resetLink = `${process.env.FRONTEND_URL}/recovery?token=${token}`;
         
         console.log(`Enviando correo a : ${user.email} con token: ${token}`);
         await transporter.sendMail({
